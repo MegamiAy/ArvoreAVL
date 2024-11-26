@@ -26,7 +26,7 @@ int main() {
                 scanf("%i", &num);
                 Node* encontrado = search(raiz, num);
                 if (encontrado != NULL) {
-                    printf("Número encontrado: %d\n", encontrado->valor);
+                    printf("Número encontrado: %d\n", encontrado->val);
                 } else {
                     printf("Número não encontrado.\n");
                 }
