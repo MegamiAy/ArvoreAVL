@@ -9,7 +9,7 @@ typedef struct node {
 } Node;
 
 Node* add(Node* raiz, int valor);
-Node* search(No* raiz, int valor);
+Node* search(Node* raiz, int valor);
 Node* del(Node* raiz, int valor);
 void pre_ord(Node* raiz);
 void pos_ord(Node* raiz);
