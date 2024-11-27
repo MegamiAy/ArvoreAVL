@@ -192,15 +192,18 @@ int main() {
     inOrder(raiz);
     printf("\n");
     imprimirArvore(raiz, 0, ' ');
-    printf("\n");
+    printf("\n\n");
+    
     printf("Pre-order: ");
     preOrder(raiz);
     printf("\n");
     imprimirArvore(raiz, 0, ' ');
-    printf("\n");
+    printf("\n\n");
+    
     printf("Post-order: ");
     postOrder(raiz);
     printf("\n");
     imprimirArvore(raiz, 0, ' ');
+    
     return 0;
 }
