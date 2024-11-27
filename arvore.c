@@ -191,18 +191,16 @@ int main() {
     printf("In-order: ");
     inOrder(raiz);
     printf("\n");
-
+    imprimirArvore(raiz, 0, ' ');
+    printf("\n");
     printf("Pre-order: ");
     preOrder(raiz);
     printf("\n");
-
+    imprimirArvore(raiz, 0, ' ');
+    printf("\n");
     printf("Post-order: ");
     postOrder(raiz);
     printf("\n");
-
-    // Imprimir árvore formatada
-    printf("\nÁrvore formatada:\n");
     imprimirArvore(raiz, 0, ' ');
-
     return 0;
 }
