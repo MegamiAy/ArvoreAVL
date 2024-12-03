@@ -55,6 +55,7 @@ int fatorDeBalanceamento(No *no){
 
 // função para a rotação à esquerda
 No* rotacaoEsquerda(No *r){
+    printf("Ocorreu uma rotação para esquerda\n");
     No *y, *f;
 
     y = r->direito;
@@ -71,6 +72,7 @@ No* rotacaoEsquerda(No *r){
 
 // função para a rotação à direita
 No* rotacaoDireita(No *r){
+    printf("Ocorreu uma rotação para direita\n");
     No *y, *f;
 
     y = r->esquerdo;
@@ -86,14 +88,17 @@ No* rotacaoDireita(No *r){
 }
 
 No* rotacaoEsquerdaDireita(No *r){
+    printf("Ocorreu uma rotação para esquerda-direita: \n");
     r->esquerdo = rotacaoEsquerda(r->esquerdo);
     return rotacaoDireita(r);
 }
 
 No* rotacaoDireitaEsquerda(No *r){
+    printf("Ocorreu uma rotação para direita-esquerda: \n");
     r->direito = rotacaoDireita(r->direito);
     return rotacaoEsquerda(r);
 }
+
 
 /*
     Função para realizar o balanceamento da árvore após uma inserção ou remoção
@@ -206,51 +211,117 @@ No* remover(No *raiz, int chave) {
     }
 }
 
-void imprimir(No *raiz, int nivel){
-    int i;
-    if(raiz){
-        imprimir(raiz->direito, nivel + 1);
-        printf("\n\n");
+void imprimir(No *raiz, int espaco) {
+    if (raiz == NULL) return;
 
-        for(i = 0; i < nivel; i++)
-            printf("\t");
+    // Aumenta o espaço entre os níveis
+    espaco += 5;
 
-        printf("%d", raiz->valor);
-        imprimir(raiz->esquerdo, nivel + 1);
+    // Imprime o filho direito primeiro
+    imprimir(raiz->direito, espaco);
+
+    // Imprime o nó atual no mesmo nível
+    printf("\n");
+    for (int i = 5; i < espaco; i++)
+        printf(" ");
+    printf("%d\n", raiz->valor);
+
+    // Imprime o filho esquerdo
+    imprimir(raiz->esquerdo, espaco);
+}
+
+
+// Função para percorrer a árvore em ordem
+void percursoInOrder(No *raiz) {
+    if (raiz) {
+        percursoInOrder(raiz->esquerdo);
+        printf("%d ", raiz->valor);
+        percursoInOrder(raiz->direito);
     }
 }
 
-int main(){
+// Função para percorrer a árvore em pré-ordem
+void percursoPreOrder(No *raiz) {
+    if (raiz) {
+        printf("%d ", raiz->valor);
+        percursoPreOrder(raiz->esquerdo);
+        percursoPreOrder(raiz->direito);
+    }
+}
 
-    int opcao, valor;
+// Função para percorrer a árvore em pós-ordem
+void percursoPostOrder(No *raiz) {
+    if (raiz) {
+        percursoPostOrder(raiz->esquerdo);
+        percursoPostOrder(raiz->direito);
+        printf("%d ", raiz->valor);
+    }
+}
+
+// Função para imprimir fatores de balanceamento
+void imprimirFatoresDeBalanceamento(No *raiz) {
+    if (raiz) {
+        imprimirFatoresDeBalanceamento(raiz->esquerdo);
+        printf("Nó: %d, Fator de Balanceamento: %d\n", raiz->valor, fatorDeBalanceamento(raiz));
+        imprimirFatoresDeBalanceamento(raiz->direito);
+    }
+}
+
+int main() {
     No *raiz = NULL;
 
-    do{
-        printf("\n\n\t0 - Sair\n\t1 - Inserir\n\t2 - Remover\n\t3 - Imprimir\n\n");
-        scanf("%d", &opcao);
+    printf("Inserindo valores iniciais...\n");
+    int valoresIniciais[] = {50, 57, 45, 25, 44, 27, 12, 55, 80, 95};
+    for (int i = 0; i < 10; i++) {
+        printf("Inserido: %d\n", valoresIniciais[i]);
+        raiz = inserir(raiz, valoresIniciais[i]);
+        imprimir(raiz, 1);
+    }
 
-        switch(opcao){
-        case 0:
-            printf("Saindo!!!");
-            break;
-        case 1:
-            printf("\tDigite o valor a ser inserido: ");
-            scanf("%d", &valor);
-            raiz = inserir(raiz, valor);
-            break;
-        case 2:
-            printf("\tDigite o valor a ser removido: ");
-            scanf("%d", &valor);
-            raiz = remover(raiz, valor);
-            break;
-        case 3:
-            imprimir(raiz, 1);
-            break;
-        default:
-            printf("\nOcao invalida!!!\n");
+    printf("\nInserindo valores adicionais...\n");
+    int valoresAdicionais[] = {14, 23, 8};
+    for (int i = 0; i < 3; i++) {
+        printf("Inserido: %d\n", valoresAdicionais[i]);
+        raiz = inserir(raiz, valoresAdicionais[i]);
+        imprimir(raiz, 1);
+    }
+
+    printf("\nRemovendo valores...\n");
+    int valoresParaRemover[] = {4, 44, 55};
+    for (int i = 0; i < 3; i++) {
+        printf("Removido: %d\n", valoresParaRemover[i]);
+        raiz = remover(raiz, valoresParaRemover[i]);
+        imprimir(raiz, 1);
+    }
+
+    printf("\nRealizando buscas...\n");
+    int valoresParaBuscar[] = {14, 12};
+    for (int i = 0; i < 2; i++) {
+        printf("Buscando: %d\n", valoresParaBuscar[i]);
+        No *busca = raiz;
+        while (busca && busca->valor != valoresParaBuscar[i]) {
+            if (valoresParaBuscar[i] < busca->valor)
+                busca = busca->esquerdo;
+            else
+                busca = busca->direito;
         }
+        if (busca)
+            printf("Valor encontrado: %d\n", busca->valor);
+        else
+            printf("Valor não encontrado: %d\n", valoresParaBuscar[i]);
+    }
 
-    }while(opcao != 0);
+    printf("\nPercursos da árvore:\n");
+    printf("In-Order: ");
+    percursoInOrder(raiz);
+    printf("\nPre-Order: ");
+    percursoPreOrder(raiz);
+    printf("\nPost-Order: ");
+    percursoPostOrder(raiz);
+    printf("\n");
+
+    printf("\nFatores de balanceamento:\n");
+    imprimirFatoresDeBalanceamento(raiz);
 
     return 0;
 }
